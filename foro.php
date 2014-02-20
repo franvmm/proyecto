@@ -1,17 +1,27 @@
 <?php
 require_once('modelo/DB.php');
 require_once('modelo/AccionesMsj.php');
-
-// Recuperamos la información de la sesión
 session_start();
 
-// Y comprobamos que el usuario se haya autentificado
 if (!isset($_SESSION['usuario'])) 
     die("Error - debe <a href='login.php'>identificarse</a>.<br />");
 
-// Recuperamos la lista de mensajes
-$lista = AccionesMsj::carga_mensajes();
+if (isset($_POST['publicar'])){
 
+if (empty($_POST['titulo']) || empty($_POST['mensaje'])) 
+        $error = "Debes introducir todos los datos correctamente";
+ else {
+         if (DB::publicaMensaje($_POST['titulo'], $_POST['mensaje'],$_POST['email'],$_POST['nick'])) {
+                session_start();
+                header("Location: foro.php");                    
+            }
+            else {
+                $error = "Datos no validos!";
+            }
+        
+    }
+}
+$lista = AccionesMsj::carga_mensajes();
 
 function creaFormularioMensajes()
 {
@@ -42,6 +52,17 @@ function creaFormularioMensajes()
 </header>
   <section id="contenido">
 <?php creaFormularioMensajes(); ?>
+  </section>
+    <section id="contenido2">
+        <form action="foro.php">
+            <label>Titulo: </label>
+            <input type="text" name="titulo"><br />
+            <label>Mensajes: </label>
+            <textarea name="mensaje"></textarea><br />
+            <label>Usuario: </label>
+            <input type="text" name="usuario" disabled value="<?php echo $_SESSION['usuario']; ?>"><br />
+            <input type="submit" name="publicar" value="Publicar Mensaje">
+        </form>
   </section>
    <br class="divisor" />
   <div id="pie">

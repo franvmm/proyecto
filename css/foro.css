@@ -1,4 +1,6 @@
 body{
+    width: 85%;
+    margin:0 auto;
     background-color: #3a92c8;
     background: radial-gradient(circle,#94d2f8,#3a92c8);
 }
@@ -9,7 +11,13 @@ header{
     text-align: center;
 }
 #contenido{
-    background-color: linear-gradient(linear,#94d2f8,#3a92c8);
+    background: linear-gradient(to bottom,#94d2f8,#3a92c8);
+    border:2px solid;
+    border-radius: 20px;
+    text-align: center;
+}
+#contenido2{
+    background: linear-gradient(linear,#94d2f8,#3a92c8);
     border:2px solid;
     border-radius: 20px;
     text-align: center;

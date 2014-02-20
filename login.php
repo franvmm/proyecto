@@ -3,18 +3,16 @@ require_once('modelo/DB.php');
 $error="";
 // Comprobamos si ya se ha enviado el formulario
 if (isset($_POST['enviar'])){
-
     if (empty($_POST['usuario']) || empty($_POST['password'] )) 
         $error = "Debes introducir un nombre de usuario y una contraseña";
     else {
-        // Comprobamos las credenciales con la base de datos
-        if (DB::verificaCliente($_POST['usuario'], $_POST['password'])){
+        $resulta=DB::verificaCliente($_POST['usuario'], $_POST['password']);
+        if (isset($resulta)){
             session_start();
-            $_SESSION['usuario']=$_POST['usuario'];
+            $_SESSION['usuario']=$resulta['user_nick'];
             header("Location: foro.php");                    
         }
         else {
-            // Si las credenciales no son válidas, se vuelven a pedir
             $error = "Usuario o contraseña no válidos!";
         }
     }
@@ -26,7 +24,7 @@ if (isset($_POST['registro'])){
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>Login-proyecto</title>
+  <title>Login-Meet&Play</title>
   <link href="css/proyecto.css" rel="stylesheet" type="text/css">
 </head>
 

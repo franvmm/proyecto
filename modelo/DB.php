@@ -9,6 +9,7 @@ class DB {
         $contrasena = '';
         
         $proyecto = new PDO($dsn, $usuario, $contrasena, $opc);
+        $proyecto->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
         $resultado = null;
         
         if (isset($proyecto)){ 
@@ -52,13 +53,9 @@ class DB {
         $sql .= "WHERE user_name='$nombre' ";
         $sql .= "AND user_pass='" . md5($contrasena) . "';";
         $resultado = self::ejecutaConsulta ($sql);
-        $verificado = false;
-
-        if(isset($resultado)) {
-            $fila = $resultado->fetch();
-            if($fila !== false){ $verificado=true;}
-        }
-        return $verificado;
+           $fila = $resultado->fetch();
+           
+        return $fila;
     }
     public static function insertaUsuario($nombre, $contrasena, $emai, $nick) {
         $sql = "INSERT INTO users(user_name, user_pass, user_email, user_nick) VALUES ('".$nombre."','".md5($contrasena)."','".$emai."','".$nick."');";
@@ -70,6 +67,19 @@ class DB {
             }
         }
         return $verificado;
+    }
+    
+    public static function publicaMensaje($usuario, $titulo, $mensaje) {
+         $fecha=date('Y-m-d');
+        $sql = "INSERT INTO forum(content_title, content_message, content_date, content_owner) VALUES ('".$titulo."','".$mensaje."','".$fecha."','".$usuario."');";
+        $resultado = self::ejecutaConsulta ($sql);
+        $insertado=false;
+        if(isset($resultado)) {
+            if($resultado != false){
+                $insertado=true;                
+            }
+        }
+        return $insertado;
     }
     
 }

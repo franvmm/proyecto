@@ -1,7 +1,7 @@
 <?php
 require_once('modelo/DB.php');
 $error="";
-// Comprobamos si ya se ha enviado el formulario
+
 if (isset($_POST['registrarse'])){
 
     if (empty($_POST['usuario']) || empty($_POST['password']) || empty($_POST['password2']) || empty($_POST['email'])) 
