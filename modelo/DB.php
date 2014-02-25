@@ -69,8 +69,8 @@ class DB {
         return $verificado;
     }
     
-    public static function publicaMensaje($usuario, $titulo, $mensaje) {
-         $fecha=date('Y-m-d');
+    public static function publicaMensaje( $titulo, $mensaje,$usuario) {
+        $fecha=date('Y-m-d');
         $sql = "INSERT INTO forum(content_title, content_message, content_date, content_owner) VALUES ('".$titulo."','".$mensaje."','".$fecha."','".$usuario."');";
         $resultado = self::ejecutaConsulta ($sql);
         $insertado=false;

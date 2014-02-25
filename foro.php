@@ -3,15 +3,23 @@ require_once('modelo/DB.php');
 require_once('modelo/AccionesMsj.php');
 session_start();
 
-if (!isset($_SESSION['usuario'])) 
+if (!isset($_SESSION['usuario'])) {
     die("Error - debe <a href='login.php'>identificarse</a>.<br />");
-
+}
+/*if (!isset($_POST['eliminar'])){
+    if (DB::publicaMensaje($_POST['titulo'], $_POST['mensaje'],$_POST['usuario'])) {
+                session_start();
+                header("Location: foro.php");                    
+            }
+            else {
+                $error = "Datos no validos!";
+            }
+}*/
 if (isset($_POST['publicar'])){
-
 if (empty($_POST['titulo']) || empty($_POST['mensaje'])) 
         $error = "Debes introducir todos los datos correctamente";
  else {
-         if (DB::publicaMensaje($_POST['titulo'], $_POST['mensaje'],$_POST['email'],$_POST['nick'])) {
+           if (DB::publicaMensaje($_POST['titulo'], $_POST['mensaje'],$_POST['usuario'])) {
                 session_start();
                 header("Location: foro.php");                    
             }
@@ -23,8 +31,8 @@ if (empty($_POST['titulo']) || empty($_POST['mensaje']))
 }
 $lista = AccionesMsj::carga_mensajes();
 
-function creaFormularioMensajes()
-{
+function creaFormularioMensajes(){
+    
     $mensajes = DB::obtieneMensajes();
     foreach ($mensajes as $p) {
         echo "<p><form id='" . $p->getcodigo() . "' action='foro.php' method='post'>";
@@ -54,14 +62,15 @@ function creaFormularioMensajes()
 <?php creaFormularioMensajes(); ?>
   </section>
     <section id="contenido2">
-        <form action="foro.php">
+        <div><span class='error'><?php echo $error; ?></span></div>
+        <form action="foro.php" method="POST">
             <label>Titulo: </label>
             <input type="text" name="titulo"><br />
             <label>Mensajes: </label>
             <textarea name="mensaje"></textarea><br />
             <label>Usuario: </label>
             <input type="text" name="usuario" disabled value="<?php echo $_SESSION['usuario']; ?>"><br />
-            <input type="submit" name="publicar" value="Publicar Mensaje">
+            <input type="submit" id="publicar" name="publicar" value="Publicar Mensaje">
         </form>
   </section>
    <br class="divisor" />

@@ -10,7 +10,6 @@ if (isset($_POST['registrarse'])){
         if($_POST['password']==$_POST['password2']){
             if (DB::insertaUsuario($_POST['usuario'], $_POST['password'],$_POST['email'],$_POST['nick'])) {
                 session_start();
-                //$_SESSION['usuario']=$_POST['nick'];
                 header("Location: login.php");                    
             }
             else {
