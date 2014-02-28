@@ -15,6 +15,7 @@ class Mensaje {
     public function muestra() { print "<p>" . $this->titulo . "</p>"+"<p>" . $this->mensaje . "</p>"; }
     
     function __construct($row) {
+        $this->codigo = $row['content_id'];
         $this->titulo = $row['content_title'];
         $this->mensaje = $row['content_message'];
         $this->fecha = $row['content_date'];

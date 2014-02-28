@@ -18,8 +18,20 @@ class DB {
         return $resultado;
     }
 
+    public static function obtieneDatosUser() {
+        $sql = "SELECT * FROM users WHERE user_nick='".$_SESSION['usuario']."';";
+        $resultado = self::ejecutaConsulta ($sql);
+
+	if($resultado) {
+           $row = $resultado->fetch();
+	}
+        return $row;    
+    
+    }
+
+    
     public static function obtieneMensajes() {
-        $sql = "SELECT content_title, content_message, content_date, content_owner FROM forum;";
+        $sql = "SELECT content_id, content_title, content_message, content_date, content_owner FROM forum;";
         $resultado = self::ejecutaConsulta ($sql);
         $mensajes = array();
 
@@ -80,6 +92,18 @@ class DB {
             }
         }
         return $insertado;
+    }
+    
+    public static function eliminaMensaje( $codig ) {
+        $sql = "DELETE FROM forum WHERE content_id=".$codig.";";
+        $resultado = self::ejecutaConsulta ($sql);
+        $eliminado=false;
+        if(isset($resultado)) {
+            if($resultado != false){
+                $eliminado=true;                
+            }
+        }
+        return $eliminado;
     }
     
 }
